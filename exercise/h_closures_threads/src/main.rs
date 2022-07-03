@@ -85,6 +85,30 @@ fn main() {
   handle_a.join().unwrap();
   handle_b.join().unwrap();
 
+  let (sender, receiver) = channel::unbounded();
+  let receiver_clone = receiver.clone();
+
+  let gm_handle_a = thread::spawn(move || {
+    for msg in receiver_clone {
+      println!("one: {}", msg);
+    }
+  });
+
+  let gm_handle_b = thread::spawn(move || {
+    for msg in receiver {
+      println!("two: {}", msg);
+    }
+  });
+
+  for num in 1..50 {
+    sender.send(num).unwrap();
+    pause_ms(20);
+  }
+
+  drop(sender);
+
+  gm_handle_a.join().unwrap();
+  gm_handle_b.join().unwrap();
   // Challenge: Make two child threads and give them each a receiving end to a channel.  From the
   // main thread loop through several values and print each out and then send it to the channel.
   // On the child threads print out the values you receive. Close the sending side in the main

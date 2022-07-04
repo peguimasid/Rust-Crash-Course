@@ -50,7 +50,7 @@ fn main() {
         .parse()
         .expect("Failed to parse sigma value of blur function");
 
-      // **OPTION**
+      // **OPTION** ✅
       // Improve the blur implementation -- see the blur() function below
       blur(infile, outfile, sigma);
     }

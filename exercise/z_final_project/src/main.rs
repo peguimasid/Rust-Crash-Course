@@ -55,8 +55,21 @@ fn main() {
       blur(infile, outfile, sigma);
     }
 
-    // **OPTION**
+    // **OPTION** ✅
     // Brighten -- see the brighten() function below
+    "brighten" => {
+      if args.len() != 3 {
+        print_usage_and_exit();
+      }
+      let infile = args.remove(0);
+      let outfile = args.remove(0);
+      let bright_value = args
+        .remove(0)
+        .parse()
+        .expect("Failed to parse bright value of brighten function");
+
+      brighten(infile, outfile, bright_value);
+    }
 
     // **OPTION**
     // Crop -- see the crop() function below
@@ -91,8 +104,9 @@ fn main() {
 
 fn print_usage_and_exit() {
   println!("USAGE (when in doubt, use a .png extension on your filenames)");
-  println!("blur INFILE OUTFILE");
+  println!("blur INFILE OUTFILE VALUE");
   println!("fractal OUTFILE");
+  println!("brighten INFILE OUTFILE VALUE");
   // **OPTION**
   // Print useful information about what subcommands and arguments you can use
   // println!("...");
@@ -110,15 +124,16 @@ fn blur(infile: String, outfile: String, sigma: f32) {
   img2.save(outfile).expect("Failed writing OUTFILE.");
 }
 
-// fn brighten(infile: String, outfile: String) {
-//   // See blur() for an example of how to open / save an image.
-
-//   // .brighten() takes one argument, an i32.  Positive numbers brighten the
-//   // image. Negative numbers darken it.  It returns a new image.
-
-//   // Challenge: parse the brightness amount from the command-line and pass it
-//   // through to this function.
-// }
+fn brighten(infile: String, outfile: String, value: i32) {
+  // See blur() for an example of how to open / save an image.
+  let img = image::open(infile).expect("Failed to opne INFILE");
+  // .brighten() takes one argument, an i32.  Positive numbers brighten the
+  // image. Negative numbers darken it.  It returns a new image.
+  let result_image = img.brighten(value);
+  result_image.save(outfile).expect("Failed writing OUTFILE");
+  // Challenge: parse the brightness amount from the command-line and pass it
+  // through to this function.
+}
 
 // fn crop(infile: String, outfile: String) {
 //   // See blur() for an example of how to open an image.

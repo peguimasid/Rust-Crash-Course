@@ -127,8 +127,17 @@ fn main() {
       invert(infile, outfile);
     }
 
-    // **OPTION**
+    // **OPTION** ✅
     // Grayscale -- see the grayscale() function below
+    "grayscale" => {
+      if args.len() != 2 {
+        print_usage_and_exit();
+      }
+      let infile = args.remove(0);
+      let outfile = args.remove(0);
+
+      grayscale(infile, outfile);
+    }
 
     // A VERY DIFFERENT EXAMPLE...a really fun one. :-)
     "fractal" => {
@@ -157,6 +166,7 @@ fn print_usage_and_exit() {
   println!("crop INFILE OUTFILE WIDTH HEIGHT X Y");
   println!("rotate INFILE OUTFILE ANGLE");
   println!("invert INFILE OUTFILE");
+  println!("grayscale INFILE OUTFILE");
   // **OPTION**
   // Print useful information about what subcommands and arguments you can use
   // println!("...");
@@ -230,13 +240,14 @@ fn invert(infile: String, outfile: String) {
   // See blur() for an example of how to save the image.
 }
 
-// fn grayscale(infile: String, outfile: String) {
-//   // See blur() for an example of how to open an image.
-
-//   // .grayscale() takes no arguments. It returns a new image.
-
-//   // See blur() for an example of how to save the image.
-// }
+fn grayscale(infile: String, outfile: String) {
+  // See blur() for an example of how to open an image.
+  let img = image::open(infile).expect("Failed to opne INFILE");
+  // .grayscale() takes no arguments. It returns a new image.
+  let result_image = img.grayscale();
+  // See blur() for an example of how to save the image.
+  result_image.save(outfile).expect("Failed writing outfile")
+}
 
 // fn generate(outfile: String) {
 //   // Create an ImageBuffer -- see fractal() for an example

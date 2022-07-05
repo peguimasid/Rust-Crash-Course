@@ -99,8 +99,21 @@ fn main() {
       crop(infile, outfile, width, height, x, y);
     }
 
-    // **OPTION**
+    // **OPTION** ✅
     // Rotate -- see the rotate() function below
+    "rotate" => {
+      if args.len() != 3 {
+        print_usage_and_exit();
+      }
+      let infile = args.remove(0);
+      let outfile = args.remove(0);
+      let angle = args
+        .remove(0)
+        .parse()
+        .expect("Failed to parse angle value in rotate function");
+
+      rotate(infile, outfile, angle);
+    }
 
     // **OPTION**
     // Invert -- see the invert() function below
@@ -133,6 +146,7 @@ fn print_usage_and_exit() {
   println!("fractal OUTFILE");
   println!("brighten INFILE OUTFILE VALUE");
   println!("crop INFILE OUTFILE WIDTH HEIGHT X Y");
+  println!("rotate INFILE OUTFILE ANGLE");
   // **OPTION**
   // Print useful information about what subcommands and arguments you can use
   // println!("...");
@@ -173,20 +187,28 @@ fn crop(infile: String, outfile: String, width: u32, height: u32, x: u32, y: u32
   // See blur() for an example of how to save the image.
 }
 
-// fn rotate(infile: String, outfile: String) {
-//   // See blur() for an example of how to open an image.
-
-//   // There are 3 rotate functions to choose from (all clockwise):
-//   //   .rotate90()
-//   //   .rotate180()
-//   //   .rotate270()
-//   // All three methods return a new image.  Pick one and use it!
-
-//   // Challenge: parse the rotation amount from the command-line, pass it
-//   // through to this function to select which method to call.
-
-//   // See blur() for an example of how to save the image.
-// }
+fn rotate(infile: String, outfile: String, angle: u32) {
+  // See blur() for an example of how to open an image.
+  let img = image::open(infile).expect("Failed to opne INFILE");
+  // There are 3 rotate functions to choose from (all clockwise):
+  //   .rotate90()
+  //   .rotate180()
+  //   .rotate270()
+  // All three methods return a new image.  Pick one and use it!
+  let result_image = match angle {
+    90 => img.rotate90(),
+    180 => img.rotate180(),
+    270 => img.rotate270(),
+    _ => {
+      println!("Please provide a valid angle (90, 180 or 270)");
+      std::process::exit(-1);
+    }
+  };
+  // Challenge: parse the rotation amount from the command-line, pass it
+  // through to this function to select which method to call.
+  result_image.save(outfile).expect("Failed writing outfile")
+  // See blur() for an example of how to save the image.
+}
 
 // fn invert(infile: String, outfile: String) {
 //   // See blur() for an example of how to open an image.

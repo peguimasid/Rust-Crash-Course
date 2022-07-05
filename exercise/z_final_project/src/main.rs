@@ -148,9 +148,15 @@ fn main() {
       fractal(outfile);
     }
 
-    // **OPTION**
+    // **OPTION** ✅
     // Generate -- see the generate() function below -- this should be sort of like "fractal()"!
-
+    "generate" => {
+      if args.len() != 1 {
+        print_usage_and_exit();
+      }
+      let outfile = args.remove(0);
+      generate(outfile);
+    }
     // For everything else...
     _ => {
       print_usage_and_exit();
@@ -167,6 +173,7 @@ fn print_usage_and_exit() {
   println!("rotate INFILE OUTFILE ANGLE");
   println!("invert INFILE OUTFILE");
   println!("grayscale INFILE OUTFILE");
+  println!("generate OUTFILE");
   // **OPTION**
   // Print useful information about what subcommands and arguments you can use
   // println!("...");
@@ -249,20 +256,22 @@ fn grayscale(infile: String, outfile: String) {
   result_image.save(outfile).expect("Failed writing outfile")
 }
 
-// fn generate(outfile: String) {
-//   // Create an ImageBuffer -- see fractal() for an example
+fn generate(outfile: String) {
+  // Create an ImageBuffer -- see fractal() for an example
+  let mut imgbuf = image::ImageBuffer::new(1000, 1000);
+  // Iterate over the coordinates and pixels of the image -- see fractal() for an example
+  for (_x, _y, pixel) in imgbuf.enumerate_pixels_mut() {
+    // Set the image to some solid color. -- see fractal() for an example
+    *pixel = image::Rgb([186, 237, 233]);
+  }
+  imgbuf.save(outfile).unwrap();
+  // Challenge: parse some color data from the command-line, pass it through
+  // to this function to use for the solid color.
 
-//   // Iterate over the coordinates and pixels of the image -- see fractal() for an example
+  // Challenge 2: Generate something more interesting!
 
-//   // Set the image to some solid color. -- see fractal() for an example
-
-//   // Challenge: parse some color data from the command-line, pass it through
-//   // to this function to use for the solid color.
-
-//   // Challenge 2: Generate something more interesting!
-
-//   // See blur() for an example of how to save the image
-// }
+  // See blur() for an example of how to save the image
+}
 
 // This code was adapted from https://github.com/PistonDevelopers/image
 fn fractal(outfile: String) {

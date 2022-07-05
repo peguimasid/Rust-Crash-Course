@@ -115,8 +115,17 @@ fn main() {
       rotate(infile, outfile, angle);
     }
 
-    // **OPTION**
+    // **OPTION** ✅
     // Invert -- see the invert() function below
+    "invert" => {
+      if args.len() != 2 {
+        print_usage_and_exit();
+      }
+      let infile = args.remove(0);
+      let outfile = args.remove(0);
+
+      invert(infile, outfile);
+    }
 
     // **OPTION**
     // Grayscale -- see the grayscale() function below
@@ -147,6 +156,7 @@ fn print_usage_and_exit() {
   println!("brighten INFILE OUTFILE VALUE");
   println!("crop INFILE OUTFILE WIDTH HEIGHT X Y");
   println!("rotate INFILE OUTFILE ANGLE");
+  println!("invert INFILE OUTFILE");
   // **OPTION**
   // Print useful information about what subcommands and arguments you can use
   // println!("...");
@@ -210,14 +220,15 @@ fn rotate(infile: String, outfile: String, angle: u32) {
   // See blur() for an example of how to save the image.
 }
 
-// fn invert(infile: String, outfile: String) {
-//   // See blur() for an example of how to open an image.
-
-//   // .invert() takes no arguments and converts the image in-place, so you
-//   // will use the same image to save out to a different file.
-
-//   // See blur() for an example of how to save the image.
-// }
+fn invert(infile: String, outfile: String) {
+  // See blur() for an example of how to open an image.
+  let mut img = image::open(infile).expect("Failed to opne INFILE");
+  // .invert() takes no arguments and converts the image in-place, so you
+  // will use the same image to save out to a different file.
+  img.invert();
+  img.save(outfile).expect("Failed writing OUTFILE");
+  // See blur() for an example of how to save the image.
+}
 
 // fn grayscale(infile: String, outfile: String) {
 //   // See blur() for an example of how to open an image.

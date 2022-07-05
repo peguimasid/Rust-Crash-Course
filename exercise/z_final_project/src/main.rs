@@ -82,19 +82,19 @@ fn main() {
       let width = args
         .remove(0)
         .parse()
-        .expect("Failed to parse width value of brighten function");
+        .expect("Failed to parse width value of crop function");
       let height = args
         .remove(0)
         .parse()
-        .expect("Failed to parse height value of brighten function");
+        .expect("Failed to parse height value of crop function");
       let x = args
         .remove(0)
         .parse()
-        .expect("Failed to parse x value of brighten function");
+        .expect("Failed to parse x value of crop function");
       let y = args
         .remove(0)
         .parse()
-        .expect("Failed to parse y value of brighten function");
+        .expect("Failed to parse y value of crop function");
 
       crop(infile, outfile, width, height, x, y);
     }

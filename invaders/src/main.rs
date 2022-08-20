@@ -31,7 +31,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     while event::poll(Duration::default())? {
       if let Event::Key(key_event) = event::read()? {
         match key_event.code {
-          KeyCode::Esc | KeyCode::Char('q') => break 'gameloop,
+          KeyCode::Esc | KeyCode::Char('q') => {
+            audio.play("lose");
+            break 'gameloop;
+          }
           _ => (),
         }
       }
